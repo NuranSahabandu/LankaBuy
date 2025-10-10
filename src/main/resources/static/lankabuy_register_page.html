@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LankaBuy - Create Your Account</title>
+    <link rel="stylesheet" href="registerPageStyle.css">
+</head>
+<body>
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <a href="#" class="logo">
+        <div class="icon">🛒</div>
+        LankaBuy
+    </a>
+
+    <div class="nav-buttons">
+        <a href="#" class="nav-btn login-btn" onclick="goToLogin()">
+            👤 Login
+        </a>
+        <a href="#" class="nav-btn register-btn">
+            ➕ Register
+        </a>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+    <div class="register-container">
+        <!-- WELCOME SECTION -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Join LankaBuy!</h1>
+            <p class="welcome-subtitle">Create your account and start shopping with the best deals in Sri Lanka</p>
+        </div>
+
+        <!-- REGISTRATION FORM -->
+        <form class="register-form" id="registerForm">
+            <!-- NAME FIELDS -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            class="form-input"
+                            placeholder="Enter first name"
+                            required
+                    >
+                    <div class="validation-message" id="firstNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            class="form-input"
+                            placeholder="Enter last name"
+                            required
+                    >
+                    <div class="validation-message" id="lastNameError"></div>
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="Enter your email address"
+                        required
+                >
+                <div class="validation-message" id="emailError"></div>
+            </div>
+
+            <!-- PHONE NUMBER -->
+            <div class="form-group">
+                <label for="phone">Phone Number <span class="required">*</span></label>
+                <div class="phone-group">
+                    <select class="form-input country-code" id="countryCode">
+                        <option value="+94">+94</option>
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="+91">+91</option>
+                    </select>
+                    <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            class="form-input phone-input"
+                            placeholder="77 123 4567"
+                            required
+                    >
+                </div>
+                <div class="validation-message" id="phoneError"></div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label for="password">Password <span class="required">*</span></label>
+                <div class="password-group">
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-input"
+                            placeholder="Create a strong password"
+                            required
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                        👁️
+                    </button>
+                </div>
+                <div class="password-strength" id="passwordStrength">
+                    <div class="strength-bar">
+                        <div class="strength-fill"></div>
+                    </div>
+                    <div class="strength-text">Password strength: <span id="strengthText">Weak</span></div>
+                </div>
+                <div class="validation-message" id="passwordError"></div>
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                <div class="password-group">
+                    <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            class="form-input"
+                            placeholder="Confirm your password"
+                            required
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                        👁️
+                    </button>
+                </div>
+                <div class="validation-message" id="confirmPasswordError"></div>
+            </div>
+
+            <!-- DATE OF BIRTH -->
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input
+                        type="date"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        class="form-input"
+                >
+            </div>
+
+            <!-- GENDER -->
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" class="form-input">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <!-- TERMS AND CONDITIONS -->
+            <div class="terms-group">
+                <input type="checkbox" id="termsCheckbox" required>
+                <div class="terms-text">
+                    I agree to the <a href="#" onclick="showTerms()">Terms & Conditions</a> and
+                    <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a> of LankaBuy
+                </div>
+            </div>
+
+            <!-- REGISTER BUTTON -->
+            <button type="submit" class="register-submit-btn" id="registerBtn">
+                <span id="registerBtnText">Create My LankaBuy Account</span>
+                <div class="loading" id="loadingSpinner"></div>
+                <div class="success-checkmark" id="successCheck">✓</div>
+            </button>
+        </form>
+
+        <!-- SOCIAL REGISTER -->
+        <div class="social-register">
+            <div class="divider">
+                <span>or sign up with</span>
+            </div>
+
+            <div class="social-buttons">
+                <button class="social-btn google-btn" onclick="registerWithGoogle()">
+                    🌐 Google
+                </button>
+                <button class="social-btn facebook-btn" onclick="registerWithFacebook()">
+                    📘 Facebook
+                </button>
+            </div>
+        </div>
+
+        <!-- LOGIN LINK -->
+        <div class="login-link">
+            Already have an account?
+            <a href="#" onclick="goToLogin()">Sign in here</a>
+        </div>
+    </div>
+</main>
+<script src="registerPageScript.js"></script>
+</body>
+
+// Helper functions for validation display
+//function showFieldError

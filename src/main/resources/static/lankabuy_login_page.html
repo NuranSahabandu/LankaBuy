@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LankaBuy - Login to Your Account</title>
+    <link rel="stylesheet" href="loginPageStyle.css">
+</head>
+<body>
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <a href="#" class="logo">
+        <div class="icon">🛒</div>
+        LankaBuy
+    </a>
+
+    <div class="nav-buttons">
+
+        <a href="#" class="nav-btn register-btn">
+            ➕ Register
+        </a>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+    <div class="login-container">
+        <!-- WELCOME SECTION -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Welcome!</h1>
+            <p class="welcome-subtitle">Sign in to your LankaBuy account to continue shopping</p>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="Enter your email address"
+                        required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-group">
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    Remember me
+                </label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-submit-btn">
+                Sign In to LankaBuy
+                <div class="loading" id="loadingSpinner"></div>
+            </button>
+        </form>
+
+
+
+        <!-- REGISTER LINK -->
+        <div class="register-link">
+            Don't have an account?
+            <a href="#" onclick="showRegisterForm()">Create one here</a>
+        </div>
+    </div>
+</main>
+<script src="loginPageScript.js"></script>
+</body>
+</html>
