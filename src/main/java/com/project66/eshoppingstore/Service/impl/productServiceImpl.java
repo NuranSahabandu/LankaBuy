@@ -1,6 +1,6 @@
 package com.project66.eshoppingstore.Service.impl;
 
-import com.project66.eshoppingstore.Repository.productRepository;
+import com.project66.eshoppingstore.Repository.ProductRepository;
 import com.project66.eshoppingstore.Service.productService;
 import com.project66.eshoppingstore.entity.Product;
 import com.project66.eshoppingstore.exception.ProductNotFoundException;
@@ -11,9 +11,9 @@ import java.util.List;
 @Service
 public class productServiceImpl implements productService {
 
-    productRepository productRepository;
+    ProductRepository productRepository;
 
-    public productServiceImpl(productRepository productRepository) {
+    public productServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
