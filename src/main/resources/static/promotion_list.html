@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Promotions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff8f0;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #d2691e;
+        }
+
+        .promotion-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .promotion-card {
+            background-color: #ffe4c4;
+            border-radius: 12px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .promotion-card:hover {
+            transform: scale(1.05);
+        }
+
+        .promotion-title {
+            font-weight: bold;
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+
+        .promotion-description {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .back-button {
+            background-color: #ffb6c1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Our Latest Promotions</h1>
+
+<!-- Promotion list container -->
+<div class="promotion-container" id="promotionList"></div>
+
+<button class="back-button" onclick="window.location.href='lankabuy_browse_products.html'">
+    Back to Products
+</button>
+
+<script>
+    // URL of your Spring Boot promotion API
+    const API = "http://localhost:8080/api/promotions";
+
+    const listContainer = document.getElementById("promotionList");
+
+    async function loadPromotions() {
+        try {
+            const res = await fetch(API);
+            if (!res.ok) throw new Error("Failed to fetch promotions");
+            const promotions = await res.json();
+
+            listContainer.innerHTML = "";
+
+            promotions.forEach(promo => {
+                const card = document.createElement("div");
+                card.className = "promotion-card";
+                card.innerHTML = `
+            <div class="promotion-title">${promo.title}</div>
+            <div class="promotion-description">${promo.description}</div>
+            <div>Discount: ${promo.discountPercent}%</div>
+            <div>Valid: ${promo.startDate} to ${promo.endDate}</div>
+          `;
+                listContainer.appendChild(card);
+            });
+        } catch (error) {
+            listContainer.innerHTML = "<p>Unable to load promotions at this time.</p>";
+            console.error(error);
+        }
+    }
+
+    loadPromotions();
+</script>
+
+</body>
+</html>

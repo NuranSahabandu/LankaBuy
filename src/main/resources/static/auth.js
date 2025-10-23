@@ -90,6 +90,7 @@ class Auth {
                 
                 
                 <button onclick="Auth.logout()" class="nav-btn logout-btn">Logout</button>
+                
             `;
         } else {
             // User is not logged in
