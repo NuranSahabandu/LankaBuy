@@ -1,60 +1,68 @@
 package com.project66.eshoppingstore.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User {
+@Table(name = "users")
+public class User {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(updatable = false, nullable = false)
-    private String userId;
-    private String userName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column
     private String phoneNumber;
+
+    @Column
     private String address;
 
-    public User() {
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.CUSTOMER;
+
+    // Enum for user roles
+    public enum Role {
+        CUSTOMER, ADMIN
     }
 
-    public String getAddress() {
-        return address;
-    }
+    // Default constructor (required by JPA)
+    public User() {}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public User(String userId, String userName, String email, String password, String phoneNumber, String address) {
-        this.userId = userId;
-        this.userName = userName;
+    // Constructor for creating new users
+    public User(String username, String email, String password, String fullName) {
+        this.username = username;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.fullName = fullName;
+        this.role = Role.CUSTOMER;
     }
 
-    public String getUserId() {
-        return userId;
+    // Getters and Setters
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -73,11 +81,35 @@ public abstract class User {
         this.password = password;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

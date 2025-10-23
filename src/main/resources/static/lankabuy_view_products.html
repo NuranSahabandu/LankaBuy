@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LankaBuy - All Products</title>
     <link rel="stylesheet" href="viewProducts.css">
+    <script src="auth.js"></script>
+
 </head>
 <body>
 <!-- TOP NAVIGATION -->
@@ -74,8 +76,15 @@
         </div>
     </div>
 </div>
-
-<script src="viewProducts.js">
+<script>
+    // Protect admin page
+    document.addEventListener('DOMContentLoaded', async function() {
+        await Auth.requireAdmin();
+    });
 </script>
+
+<script src="viewProducts.js"></script>
+<script src="auth.js"></script>
+
 </body>
 </html>

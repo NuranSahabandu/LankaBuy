@@ -11,4 +11,4 @@ spring:
 
 
   #JPA Settings
-  jpa.hibernate.ddl-auto: create
+  jpa.hibernate.ddl-auto: update

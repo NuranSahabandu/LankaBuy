@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LankaBuy - Add New Product</title>
     <link rel="stylesheet" href="createProduct.css">
+
 </head>
 <body>
 <!-- TOP NAVIGATION -->
@@ -161,5 +162,12 @@
         </form>
     </div>
 </main>
+<script>
+    // Protect admin page
+    document.addEventListener('DOMContentLoaded', async function() {
+        await Auth.requireAdmin();
+    });
+</script>
 <script src="createProduct.js"></script>
+<script src="auth.js"></script>
 </body>

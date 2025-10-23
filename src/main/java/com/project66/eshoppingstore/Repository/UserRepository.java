@@ -1,12 +1,26 @@
 package com.project66.eshoppingstore.Repository;
 
-import com.project66.eshoppingstore.entity.Customer;
 import com.project66.eshoppingstore.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, String> {
-    Optional<Customer> findByUserName(String userName);
-    boolean existsByUserName(String userName);
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    // Find user by username
+    Optional<User> findByUsername(String username);
+
+    // Find user by email
+    Optional<User> findByEmail(String email);
+
+    // Check if username already exists
+    boolean existsByUsername(String username);
+
+    // Check if email already exists
+    boolean existsByEmail(String email);
+
+    // Find user by username or email (for login)
+    Optional<User> findByUsernameOrEmail(String username, String email);
 }
