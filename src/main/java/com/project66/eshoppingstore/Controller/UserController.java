@@ -131,4 +131,144 @@ public class UserController {
     public User getUserProfile(@PathVariable Long userId) {
         return userService.findUserById(userId);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Get current user's profile
+     */
+    @GetMapping("/profile")
+    public Map<String, Object> getCurrentUserProfile(HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+
+        if (user != null) {
+            return Map.of(
+                    "success", true,
+                    "user", Map.of(
+                            "id", user.getId(),
+                            "username", user.getUsername(),
+                            "email", user.getEmail(),
+                            "fullName", user.getFullName(),
+                            "phoneNumber", user.getPhoneNumber() != null ? user.getPhoneNumber() : "",
+                            "address", user.getAddress() != null ? user.getAddress() : ""
+                    )
+            );
+        } else {
+            return Map.of(
+                    "success", false,
+                    "message", "Please log in to view profile"
+            );
+        }
+    }
+
+    /**
+     * Update current user's profile
+     */
+    @PutMapping("/profile")
+    public Map<String, Object> updateProfile(@RequestBody User updatedUser, HttpSession session) {
+        User currentUser = (User) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return Map.of(
+                    "success", false,
+                    "message", "Please log in to update profile"
+            );
+        }
+
+        try {
+            // Get the user from database to ensure we have the latest data
+            User userToUpdate = userService.findUserById(currentUser.getId());
+
+            if (userToUpdate == null) {
+                return Map.of(
+                        "success", false,
+                        "message", "User not found"
+                );
+            }
+
+            // Update only allowed fields (don't allow username/email changes for simplicity)
+            userToUpdate.setFullName(updatedUser.getFullName());
+            userToUpdate.setPhoneNumber(updatedUser.getPhoneNumber());
+            userToUpdate.setAddress(updatedUser.getAddress());
+
+            // Update password only if provided
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().trim().isEmpty()) {
+                if (updatedUser.getPassword().length() < 6) {
+                    return Map.of(
+                            "success", false,
+                            "message", "Password must be at least 6 characters"
+                    );
+                }
+                userToUpdate.setPassword(updatedUser.getPassword());
+            }
+
+            String result = userService.updateUser(userToUpdate);
+
+            if ("Profile updated successfully!".equals(result)) {
+                // Update session with new data
+                session.setAttribute("loggedInUser", userToUpdate);
+
+                return Map.of(
+                        "success", true,
+                        "message", "Profile updated successfully!"
+                );
+            } else {
+                return Map.of(
+                        "success", false,
+                        "message", result
+                );
+            }
+
+        } catch (Exception e) {
+            return Map.of(
+                    "success", false,
+                    "message", "Failed to update profile: " + e.getMessage()
+            );
+        }
+    }
+
+    /**
+     * Delete current user's profile
+     */
+    @DeleteMapping("/profile")
+    public Map<String, Object> deleteProfile(HttpSession session) {
+        User currentUser = (User) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return Map.of(
+                    "success", false,
+                    "message", "Please log in to delete profile"
+            );
+        }
+
+        try {
+            userService.deleteUser(currentUser.getId());
+
+            // Invalidate session after deletion
+            session.invalidate();
+
+            return Map.of(
+                    "success", true,
+                    "message", "Profile deleted successfully"
+            );
+
+        } catch (Exception e) {
+            return Map.of(
+                    "success", false,
+                    "message", "Failed to delete profile: " + e.getMessage()
+            );
+        }
+    }
+
+
 }

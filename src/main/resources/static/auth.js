@@ -73,8 +73,40 @@ class Auth {
         return true;
     }
 
+
     // Update navigation based on login status
     static async updateNavigation() {
+        const user = await this.getCurrentUser();
+
+        // Find navigation elements
+        const navButtons = document.querySelector('.nav-buttons');
+        if (!navButtons) return;
+
+        if (user) {
+            // User is logged in
+            navButtons.innerHTML = `
+            <span class="user-welcome">Welcome, ${user.fullName || user.username}!</span>
+            ${user.role === 'ADMIN' ?
+                '<button onclick="window.location.href=\'lankabuy_view_products.html\'" class="nav-btn">Admin Panel</button>' +
+                '<button class="nav-btn add-btn" onclick="goToAddProduct()">➕ Add New Product</button>' +
+                '<button class="nav-btn update-btn" onclick="goToUpdateProduct()">✏️ Update Product</button>'
+                :
+                '<button onclick="window.location.href=\'profile.html\'" class="nav-btn profile-btn">👤 My Profile</button>'
+            }
+            <button onclick="Auth.logout()" class="nav-btn logout-btn">Logout</button>
+        `;
+        } else {
+            // User is not logged in
+            navButtons.innerHTML = `
+            <button onclick="window.location.href='login.html'" class="nav-btn">Login</button>
+            <button onclick="window.location.href='register.html'" class="nav-btn">Sign Up</button>
+            <button onclick="window.location.href='browseProducts.html'" class="nav-btn">Browse</button>
+        `;
+        }
+    }
+
+    // Update navigation based on login status
+    /*static async updateNavigation() {
         const user = await this.getCurrentUser();
 
         // Find navigation elements
@@ -100,7 +132,7 @@ class Auth {
                 <button onclick="window.location.href='browseProducts.html'" class="nav-btn">Browse</button>
             `;
         }
-    }
+    }*/
 
     // Show login status message
     static showAuthMessage(message, type = 'info') {
