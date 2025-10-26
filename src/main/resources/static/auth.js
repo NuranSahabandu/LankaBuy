@@ -89,6 +89,64 @@ class Auth {
             ${user.role === 'ADMIN' ?
                 '<button onclick="window.location.href=\'lankabuy_view_products.html\'" class="nav-btn">Admin Panel</button>' +
                 '<button class="nav-btn add-btn" onclick="goToAddProduct()">➕ Add New Product</button>' +
+                '<button class="nav-btn update-btn" onclick="goToUpdateProduct()">✏️ Update Product</button>' +
+                '<button onclick="window.location.href=\'admin-orders.html\'" class="nav-btn">📋 Manage Orders</button>'
+                :
+                '<button onclick="window.location.href=\'cart.html\'" class="nav-btn cart-btn">🛒 Cart (<span id="cartCount">0</span>)</button>' +
+                '<button onclick="window.location.href=\'orders.html\'" class="nav-btn orders-btn">📋 My Orders</button>' +
+                '<button onclick="window.location.href=\'profile.html\'" class="nav-btn profile-btn">👤 My Profile</button>'
+            }
+            <button onclick="Auth.logout()" class="nav-btn logout-btn">Logout</button>
+        `;
+
+            // Update cart count for customers
+            if (user.role !== 'ADMIN') {
+                this.updateCartCount();
+            }
+        } else {
+            // User is not logged in
+            navButtons.innerHTML = `
+            <button onclick="window.location.href='login.html'" class="nav-btn">Login</button>
+            <button onclick="window.location.href='register.html'" class="nav-btn">Sign Up</button>
+            <button onclick="window.location.href='browseProducts.html'" class="nav-btn">Browse</button>
+        `;
+        }
+    }
+
+// Update cart count in navigation
+    static async updateCartCount() {
+        try {
+            const response = await fetch('/cart/items');
+            const result = await response.json();
+
+            if (result.success) {
+                const cartCount = result.cartItems.length;
+                const cartCountElement = document.getElementById('cartCount');
+                if (cartCountElement) {
+                    cartCountElement.textContent = cartCount;
+                }
+            }
+        } catch (error) {
+            console.error('Error updating cart count:', error);
+        }
+    }
+
+
+    // Update navigation based on login status
+    /*static async updateNavigation() {
+        const user = await this.getCurrentUser();
+
+        // Find navigation elements
+        const navButtons = document.querySelector('.nav-buttons');
+        if (!navButtons) return;
+
+        if (user) {
+            // User is logged in
+            navButtons.innerHTML = `
+            <span class="user-welcome">Welcome, ${user.fullName || user.username}!</span>
+            ${user.role === 'ADMIN' ?
+                '<button onclick="window.location.href=\'lankabuy_view_products.html\'" class="nav-btn">Admin Panel</button>' +
+                '<button class="nav-btn add-btn" onclick="goToAddProduct()">➕ Add New Product</button>' +
                 '<button class="nav-btn update-btn" onclick="goToUpdateProduct()">✏️ Update Product</button>'
                 :
                 '<button onclick="window.location.href=\'profile.html\'" class="nav-btn profile-btn">👤 My Profile</button>'
@@ -103,7 +161,7 @@ class Auth {
             <button onclick="window.location.href='browseProducts.html'" class="nav-btn">Browse</button>
         `;
         }
-    }
+    }*/
 
     // Update navigation based on login status
     /*static async updateNavigation() {

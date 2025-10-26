@@ -1,12 +1,24 @@
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = window.location.origin; // Use current origin instead of hardcoded
 let allProducts = [];
 let currentProduct = null;
 
 // ==================== LOAD PRODUCTS ON PAGE LOAD ====================
 
 window.addEventListener('load', function() {
-    loadAllProducts();
+    // Initialize authentication first, then load products
+    initializePage();
 });
+
+// ==================== INITIALIZE PAGE ====================
+async function initializePage() {
+    // Update navigation (this will show proper login state and cart count)
+    if (typeof Auth !== 'undefined') {
+        await Auth.updateNavigation();
+    }
+
+    // Then load products
+    loadAllProducts();
+}
 
 // ==================== LOAD ALL PRODUCTS ====================
 
@@ -151,15 +163,49 @@ function closeModal() {
 
 // ==================== CART FUNCTIONS ====================
 
-function addToCart() {
+async function addToCart() {
     if (currentProduct) {
-        showAlert(`${currentProduct.productName} added to cart!`, 'success');
+        await addToCartQuick(currentProduct.productId, currentProduct.productName);
         closeModal();
     }
 }
 
-function addToCartQuick(productId, productName) {
-    showAlert(`${productName} added to cart!`, 'success');
+async function addToCartQuick(productId, productName) {
+    try {
+        // Use full API URL to be consistent
+        const response = await fetch(`${API_BASE_URL}/cart/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId: productId,
+                quantity: 1
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showAlert(`${productName} added to cart!`, 'success');
+            // Update cart count in navigation
+            if (typeof Auth !== 'undefined') {
+                Auth.updateCartCount();
+            }
+        } else {
+            if (result.message.includes("log in")) {
+                showAlert('Please log in to add items to cart', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } else {
+                showAlert(result.message, 'error');
+            }
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        showAlert('Failed to add item to cart', 'error');
+    }
 }
 
 // ==================== SEARCH PRODUCTS ====================

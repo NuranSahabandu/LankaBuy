@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LankaBuy - My Orders</title>
+    <link rel="stylesheet" href="orders.css">
+    <script src="auth.js"></script>
+</head>
+<body>
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <a href="lankabuy_browse_products.html" class="logo">
+        <div class="icon">🛒</div>
+        LankaBuy
+    </a>
+    <div class="nav-buttons">
+        <!-- Will be populated by auth.js -->
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+    <div class="orders-container">
+        <div class="orders-header">
+            <h1>My Orders</h1>
+            <button onclick="window.location.href='lankabuy_browse_products.html'" class="continue-shopping-btn">
+                ← Continue Shopping
+            </button>
+        </div>
+
+        <!-- ORDERS LIST -->
+        <div class="orders-list" id="ordersList">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading orders...
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER DETAILS MODAL -->
+    <div class="modal" id="orderDetailsModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeOrderDetailsModal()">×</button>
+            <div id="orderDetailsContent">
+                <!-- Will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MESSAGE CONTAINER -->
+<div id="messageContainer" class="message-container" style="display: none;">
+    <div id="messageContent" class="message-content"></div>
+</div>
+
+<script src="orders.js"></script>
+</body>
+</html>
